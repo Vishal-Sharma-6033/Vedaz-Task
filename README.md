@@ -218,18 +218,50 @@ After signing in, you'll enter the chat room. Open multiple browser tabs or use 
 - **No message editing/deletion** — Messages are append-only for simplicity.
 - **No file/image uploads** — Only text messages are supported.
 
-## Running in Production
+## Deployment
 
-```bash
-# Build the client
-cd client
-npm run build
+### Backend on Render
 
-# Serve static files from the server (optional)
-# Update server to serve client/dist
+1. Push your code to GitHub
+2. Go to [render.com](https://render.com) → **New** → **Web Service**
+3. Connect your GitHub repo and select the `server/` directory
+4. Configure:
+   - **Build Command:** `npm install`
+   - **Start Command:** `npm start`
+   - **Node Version:** 18+
+5. Add environment variables in Render dashboard:
+   ```
+   MONGODB_URI=mongodb+srv://<your-atlas-uri>
+   JWT_SECRET=<your-secret>
+   CORS_ORIGIN=https://your-app.vercel.app
+   NODE_ENV=production
+   ```
+6. Deploy — Render will give you a URL like `https://chat-app-server.onrender.com`
+
+> **Note:** Render's free tier spins down after inactivity. The first request after idle may take 30–50 seconds.
+
+### Frontend on Vercel
+
+1. Go to [vercel.com](https://vercel.com) → **New Project**
+2. Import your GitHub repo, set **Root Directory** to `client/`
+3. Add environment variable:
+   ```
+   VITE_API_URL=https://chat-app-server.onrender.com
+   ```
+4. Deploy — Vercel gives you a URL like `https://chat-app.vercel.app`
+
+### Post-Deployment
+
+After both are live, update the backend's `CORS_ORIGIN` on Render to include your Vercel URL:
+```
+CORS_ORIGIN=https://your-app.vercel.app
 ```
 
-For deployment to Render, Railway, or similar platforms:
-1. Set the `MONGODB_URI` to your cloud MongoDB instance (e.g., MongoDB Atlas)
-2. Set `CORS_ORIGIN` to your frontend's deployed URL
-3. Deploy the server; build and deploy the client separately or serve from the server
+### Environment Variables Summary
+
+| Service  | Variable      | Where to set     | Example                                        |
+| -------- | ------------- | ---------------- | ---------------------------------------------- |
+| Backend  | `MONGODB_URI` | Render dashboard | `mongodb+srv://...`                            |
+| Backend  | `JWT_SECRET`  | Render dashboard | `my-secret-key`                                |
+| Backend  | `CORS_ORIGIN` | Render dashboard | `https://your-app.vercel.app`                  |
+| Frontend | `VITE_API_URL`| Vercel dashboard | `https://chat-app-server.onrender.com`         |

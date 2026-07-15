@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { io } from "socket.io-client";
 
-const SOCKET_URL = import.meta.env.PROD
-  ? window.location.origin
-  : "http://localhost:5000";
+const SOCKET_URL =
+  import.meta.env.VITE_API_URL ||
+  (import.meta.env.PROD ? window.location.origin : "http://localhost:5000");
 
 export function useSocket(username, token) {
   const [messages, setMessages] = useState([]);
@@ -85,7 +85,10 @@ export function useSocket(username, token) {
 
   const fetchMessages = useCallback(async () => {
     try {
-      const res = await fetch("/api/messages?limit=100", {
+      const baseUrl =
+        import.meta.env.VITE_API_URL ||
+        (import.meta.env.PROD ? "" : "http://localhost:5000");
+      const res = await fetch(`${baseUrl}/api/messages?limit=100`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) return;
