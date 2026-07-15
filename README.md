@@ -10,12 +10,19 @@ A full-stack real-time chat application built with React (Vite) on the frontend 
 - **Message timestamps** displayed on every message
 - **REST APIs** for sending and fetching messages
 
+### Authentication
+- **Register** — create an account with a username (min 2 chars) and password (min 6 chars)
+- **Login** — sign in with username and password
+- **JWT-based auth** — stateless tokens (7-day expiry) protect all message APIs and Socket.io connections
+- **Password hashing** — passwords stored securely with bcryptjs (10 salt rounds)
+- **Session persistence** — JWT saved in `localStorage`; user stays logged in across page refreshes
+- **Logout** — sign out clears token and returns to login screen
+- **Duplicate prevention** — registration rejects taken usernames
+
 ### Bonus
-- **Username & password authentication** — Register and login with JWT-based auth
 - **Typing indicator** — shows when other users are typing
 - **Online/offline user status** — sidebar shows all connected users with live updates
-- **Message read/delivered status** — connection status in header
-- **Logout** — sign out and switch accounts
+- **Connection status** — header shows whether Socket.io is connected
 
 ## Tech Stack
 
@@ -121,7 +128,12 @@ The frontend will run on `http://localhost:5173`.
 
 ### 4. Open the app
 
-Navigate to `http://localhost:5173` in your browser. Register a new account (username + password), then sign in to start chatting. Open multiple tabs with different accounts to test real-time messaging between users.
+Navigate to `http://localhost:5173` in your browser. You'll see the login screen with two tabs:
+
+1. **Register** — enter a username (2–20 chars) and password (min 6 chars) to create a new account
+2. **Login** — sign in with your existing credentials
+
+After signing in, you'll enter the chat room. Open multiple browser tabs or use different accounts to test real-time messaging between users. Use the logout button (top-right) to sign out and switch accounts.
 
 ## Environment Variables
 
