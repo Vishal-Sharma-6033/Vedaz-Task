@@ -150,10 +150,26 @@ After signing in, you'll enter the chat room. Open multiple browser tabs or use 
 
 ### Auth (Public)
 
-| Method | Endpoint            | Description      | Body                                          |
-| ------ | ------------------- | ---------------- | --------------------------------------------- |
-| POST   | `/api/auth/register`| Register account | `{ "username": "...", "password": "..." }`    |
-| POST   | `/api/auth/login`   | Login            | `{ "username": "...", "password": "..." }`    |
+| Method | Endpoint             | Description      | Body                                          |
+| ------ | -------------------- | ---------------- | --------------------------------------------- |
+| POST   | `/api/auth/register` | Register account | `{ "username": "...", "password": "..." }`    |
+| POST   | `/api/auth/login`    | Login            | `{ "username": "...", "password": "..." }`    |
+
+**Register / Login Response (200 / 201):**
+```json
+{
+  "user": { "_id": "...", "username": "vishal", "createdAt": "..." },
+  "token": "eyJhbGciOiJIUzI1NiIs..."
+}
+```
+
+**Error Responses:**
+| Status | Scenario |
+| ------ | -------- |
+| `400`  | Missing username or password |
+| `400`  | Username too short (< 2 chars) or password too short (< 6 chars) |
+| `401`  | Invalid credentials (login) |
+| `409`  | Username already taken (register) |
 
 ### Messages (Protected — requires `Authorization: Bearer <token>`)
 
@@ -195,7 +211,8 @@ After signing in, you'll enter the chat room. Open multiple browser tabs or use 
 
 ## Assumptions
 
-- **Username/password auth** — Users register with a username and password. JWTs expire after 7 days. No email verification or password reset flow.
+- **Username/password auth** — Users register with a unique username and password. Passwords are hashed with bcryptjs (10 rounds). JWTs expire after 7 days. No email verification, password reset, or OAuth flow.
+- **Token storage** — JWT is stored in `localStorage` and sent via `Authorization` header (REST) and `auth.token` (Socket.io). This is acceptable for this project but `httpOnly` cookies are recommended for production.
 - **Single chat room** — All users share one global chat room (no private messaging or channels).
 - **MongoDB is available locally** — The default connection string assumes MongoDB is running on `localhost:27017`. For cloud deployment, update `MONGODB_URI`.
 - **No message editing/deletion** — Messages are append-only for simplicity.
