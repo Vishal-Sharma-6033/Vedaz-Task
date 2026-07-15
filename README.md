@@ -201,13 +201,13 @@ After signing in, you'll enter the chat room. Open multiple browser tabs or use 
 
 3. **Vite for frontend** — Faster dev server and build times compared to Create React App, with built-in proxy support for Socket.io during development.
 
-3. **Context + custom hook pattern** — `ChatContext` provides socket state globally; `useSocket` encapsulates all socket logic (connection, events, cleanup) in one reusable hook.
+4. **Context + custom hook pattern** — `ChatContext` provides socket state globally; `useSocket` encapsulates all socket logic (connection, events, cleanup) in one reusable hook.
 
-4. **Server-side message storage** — Messages are saved to MongoDB via the Socket.io handler, ensuring real-time delivery and persistence in a single operation.
+5. **Server-side message storage** — Messages are saved to MongoDB via the Socket.io handler, ensuring real-time delivery and persistence in a single operation.
 
-5. **Typing indicator with debounce** — A 2-second timeout stops the typing event after the user pauses, preventing unnecessary broadcasts.
+6. **Typing indicator with debounce** — A 2-second timeout stops the typing event after the user pauses, preventing unnecessary broadcasts.
 
-6. **Responsive sidebar** — The online users sidebar overlays on mobile and slides in on desktop, adapting to different screen sizes.
+7. **Responsive sidebar** — The online users sidebar overlays on mobile and slides in on desktop, adapting to different screen sizes.
 
 ## Assumptions
 
