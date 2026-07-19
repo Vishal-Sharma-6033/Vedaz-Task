@@ -2,6 +2,9 @@
 
 A full-stack real-time chat application built with React (Vite) on the frontend and Node.js + Express + Socket.io on the backend, with MongoDB for message persistence.
 
+
+Live Preview Link- https://vedaz-task.vercel.app/
+
 ## Features
 
 ### Core
